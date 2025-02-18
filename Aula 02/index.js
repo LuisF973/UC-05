@@ -58,9 +58,10 @@ app.put("/produtos/:id", (requisicao,resposta) =>{
       return resposta.status(404).json({mensagem:"Informe um parametro"})
     }
     if(!produto){
-        produto.nome = novoNome || produto.nome
-        produto.preco = novoPreco || produto.preco
+        return resposta.status(404).json({mensagem: "produto nao encontrado"})
     }
+    produto.nome = novoNome || produto.nome
+    produto.preco = novoPreco || produto.preco
     resposta.status(200).json({mensagem:"produto atualizado com sucesso"})
   } catch (error) {
     return resposta.status(404).json({mensagem:"produto nao encontrado"})
@@ -69,11 +70,11 @@ app.put("/produtos/:id", (requisicao,resposta) =>{
 
 app.delete("/produtos/:id", (requisicao, resposta) =>{
   const id = requisicao.params.id
-  const produto = bancoDados.findIndex(elemento => elemento.id === parseInt(id))
+  const produto = bancoDados.findIndex(elemento => elemento.id === id)
   if (produto === -1){
     return resposta.status(404).json({mensagem:"produto nao encontrado"})
   }
-  bancoDados.splice(index, 1)
+  bancoDados.splice(produto, 1)
   resposta.status(200).json({
     mensagem:"produto deletado com sucesso"
   })
@@ -95,6 +96,19 @@ app.get("/produtos/:id",(requisicao,resposta) =>{
       erro:error.message
     })
   }
+})
+
+
+app.delete("/produtos",(requisicao, resposta) =>{
+  try {
+    bancoDados.length = 0;
+    resposta.status(200).json({mensagem: "todos os produtos foram excluidos"})
+  } catch (error) {
+    resposta.status(500).json({
+      menubar: "erro ao deletar produto",
+      erro: error.message
+  }
+)}
 })
 
 app.listen(port, () => {
