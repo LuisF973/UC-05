@@ -1,16 +1,16 @@
 const { pool } = require("../../../config/database");
 
 class AlunoModel {
-  static async criar(matricula, nome, email, senha) {
-    const dados = [matricula, nome, email, senha];
-    const consulta = `insert into aluno(matricula, nome, email, senha) values ($1, $2, $3, $4) returning *`;
+  static async criar(matricula, nome, email, senhar) {
+    const dados = [matricula, nome, email, senhar];
+    const consulta = `insert into aluno(matricula, nome, email, senhar) values ($1, $2, $3, $4) returning *`;
     const novoAluno = await pool.query(consulta, dados);
     return novoAluno.rows;
   }
 
-  static async editar(matricula, nome, email, senha) {
-    const dados = [matricula, nome, email, senha];
-    const consulta = `update aluno set nome = $2, email = $3, senha = $4 where matricula = $1 returning *`;
+  static async editar(matricula, nome, email, senhar) {
+    const dados = [matricula, nome, email, senhar];
+    const consulta = `update aluno set nome = $2, email = $3, senhar = $4 where matricula = $1 returning *`;
     const alunoAtualizado = await pool.query(consulta, dados);
     return alunoAtualizado.rows;
   }
