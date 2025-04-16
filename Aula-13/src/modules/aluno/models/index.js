@@ -42,7 +42,9 @@ const Aluno = sequelize.define(
     turma_id:{
         type: DataTypes.INTEGER,
         allowNull: false,
-        references:
+        references:{
+        model:turma
+        }
 
     }
 
